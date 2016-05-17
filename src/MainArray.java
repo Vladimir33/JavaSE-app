@@ -32,7 +32,7 @@ public class MainArray {
 
         printAll();
        // arrayStorage.delete(r1.uuid);
-        arrayStorage.delete(r2.uuid);
+       // arrayStorage.delete(r2.uuid);
         arrayStorage.delete(r3.uuid);
            arrayStorage.delete(r4.uuid);
         //   arrayStorage.delete(r5.uuid);
