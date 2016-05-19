@@ -19,7 +19,6 @@ public class ArrayStorage {
     void save(Resume r) {
 
         storage[resumeCount] = r;
-
         // Resume size;
         resumeCount++;
     }
