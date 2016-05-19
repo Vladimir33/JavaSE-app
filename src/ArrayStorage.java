@@ -38,7 +38,6 @@ public class ArrayStorage {
 
         int m = 0;
         while ((storage[m].uuid != uuid) && (m < resumeCount)) {
-
             m++;
         }
         // copy / shift
