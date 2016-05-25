@@ -14,80 +14,71 @@ public class ArrayStorage {
 
     public void clear() {
 
-        for (int j = 0; j < storage.length; j++)
-            storage[j] = null;
+        for (int i = 0; i < resumeCount; i++)
+            storage[i] = null;
         // shrink storageNoNull size to O;
         resumeCount = 0;
     }
 
     public void update(Resume r) {
         // TODO check resume present
-
-        int i = 0;
-        while ((!storage[i].equals(r)) && (i < resumeCount)) {
-            i++;
+        boolean resumePresent = false;
+        for (int i = 0; i < resumeCount; i++) {
+            if (storage[i].equals(r)) {
+                resumePresent = true;
+                storage[i] = new Resume();
+            }
         }
-        if(i < resumeCount){
-            storage[i] = new Resume();
-        }else{
+        if (!resumePresent) {
             System.out.println("ERROR");
         }
     }
 
     public void save(Resume r) {
-
         // TODO check resume not present
-        int i = 0;
-        while ((!storage[i].equals(r)) && (i < resumeCount)) {
-            i++;
+        boolean resumePresent = false;
+        for (int i = 0; i < resumeCount; i++) {
+            if (storage[i].equals(r)) {
+                resumePresent = true;
+            }
         }
-        // TODO check for overflow / check resume not present
-        if (resumeCount < storage.length && i == resumeCount) {
+        // TODO check for overflow
+        boolean ifOverflow = false;
+        if (resumeCount == storage.length) {
+            ifOverflow = true;
+        }
+        if (!resumePresent && !ifOverflow) {
             storage[resumeCount] = r;
-            // Resume size;
             resumeCount++;
-        }else{
+        } else {
             System.out.println("ERROR");
         }
     }
 
     public Resume get(String uuid) {
         // TODO check resume present
-        int i = 0;
-        while ((!storage[i].getUuid().equals(uuid)) && (i < resumeCount)) {
-            i++;
-        }
-        if (i == resumeCount) {
-            System.out.println("ERROR");
-        }else {
-
-            for (int j = 0; j < resumeCount; j++) {
-                if (storage[j].getUuid().equals(uuid)) {
-                    return storage[j];
-                }
+        for (int i = 0; i < resumeCount; i++) {
+            if (storage[i].getUuid().equals(uuid)) {
+                return storage[i];
             }
         }
-            return null;
+        System.out.println("ERROR");
+        return null;
     }
 
     public void delete(String uuid) {
         // TODO check resume present
-        int i = 0;
-        while ((!storage[i].getUuid().equals(uuid)) && (i < resumeCount)) {
-            i++;
-        }
-        if (i == resumeCount) {
-            System.out.println("ERROR");
-        }else {
-
-            int m = 0;
-            while ((storage[m].getUuid() != uuid) && (m < resumeCount)) {
-                m++;
+        boolean resumePresent = false;
+        for (int i = 0; i < resumeCount; i++) {
+            if (uuid == storage[i].getUuid()) {
+                resumePresent = true;
+                storage[i] = storage[resumeCount - 1];
+                storage[resumeCount - 1] = null;
+                resumeCount--;
             }
-            // copy / shift
-            System.arraycopy(storage, m + 1, storage, m, storage.length - m - 1);
-
-            resumeCount--;
+        }
+        if (!resumePresent) {
+            System.out.println("ERROR");
         }
     }
 
@@ -97,11 +88,10 @@ public class ArrayStorage {
     public Resume[] getAll() {
 
         Resume[] storageNoNull = new Resume[resumeCount];
-        int k = 0;
-        for (int j = 0; j < resumeCount; j++) {
-            if (storage[j].getUuid() != null) {
-                storageNoNull[k] = storage[j];
-                k++;
+
+        for (int i = 0; i < resumeCount; i++) {
+            if (storage[i].getUuid() != null) {
+                storageNoNull[i] = storage[i];
             }
         }
         return storageNoNull;
