@@ -1,6 +1,9 @@
+import com.urise.webapp.model.Resume;
+import com.urise.webapp.storage.ArrayStorage;
+
 /**
  *
- * Test for ArrayStorage
+ * Test for com.urise.webapp.storage.ArrayStorage
  */
 
 public class MainArray {
@@ -9,15 +12,15 @@ public class MainArray {
 
     public static void main(String[] args) {
         Resume r1 = new Resume();
-        r1.uuid = "uuid1";
+        r1.setUuid("uuid1");
         Resume r2 = new Resume();
-        r2.uuid = "uuid2";
+        r2.setUuid("uuid2");
         Resume r3 = new Resume();
-        r3.uuid = "uuid3";
+        r3.setUuid("uuid3");
         Resume r4 = new Resume();
-        r4.uuid = "uuid4";
+        r4.setUuid("uuid4");
         Resume r5 = new Resume();
-        r5.uuid = "uuid5";
+        r5.setUuid("uuid5");
 
 
         arrayStorage.save(r1);
@@ -27,14 +30,14 @@ public class MainArray {
         arrayStorage.save(r5);
 
 
-        System.out.println("Get r1: " + arrayStorage.get(r1.uuid));
+        System.out.println("Get r1: " + arrayStorage.get(r1.getUuid()));
         System.out.println("Size: " + arrayStorage.size());
 
         printAll();
        // arrayStorage.delete(r1.uuid);
        // arrayStorage.delete(r2.uuid);
-        arrayStorage.delete(r3.uuid);
-           arrayStorage.delete(r4.uuid);
+        arrayStorage.delete(r3.getUuid());
+           arrayStorage.delete(r4.getUuid());
         //   arrayStorage.delete(r5.uuid);
 
         printAll();
