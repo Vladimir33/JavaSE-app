@@ -20,34 +20,27 @@ public class ArrayStorage {
         resumeCount = 0;
     }
 
-    public void update(Resume r) {
-        // TODO check resume present
-        boolean resumePresent = false;
+    public int getResumeIndex(String uuid) {
         for (int i = 0; i < resumeCount; i++) {
-            if (storage[i].equals(r)) {
-                resumePresent = true;
-                storage[i] = new Resume();
+            if (storage[i].getUuid().equals(uuid)) {
+                return i;
             }
         }
-        if (!resumePresent) {
+        return -1;
+    }
+
+    public void update(Resume r) {
+        // TODO check resume present
+        if (getResumeIndex(r.getUuid()) != -1) {
+            storage[getResumeIndex(r.getUuid())] = new Resume();
+        } else {
             System.out.println("ERROR");
         }
     }
 
     public void save(Resume r) {
-        // TODO check resume not present
-        boolean resumePresent = false;
-        for (int i = 0; i < resumeCount; i++) {
-            if (storage[i].equals(r)) {
-                resumePresent = true;
-            }
-        }
-        // TODO check for overflow
-        boolean ifOverflow = false;
-        if (resumeCount == storage.length) {
-            ifOverflow = true;
-        }
-        if (!resumePresent && !ifOverflow) {
+        // TODO check resume not present / for overflow
+        if (getResumeIndex(r.getUuid()) == -1 && resumeCount != storage.length) {
             storage[resumeCount] = r;
             resumeCount++;
         } else {
@@ -57,28 +50,22 @@ public class ArrayStorage {
 
     public Resume get(String uuid) {
         // TODO check resume present
-        for (int i = 0; i < resumeCount; i++) {
-            if (storage[i].getUuid().equals(uuid)) {
-                return storage[i];
-            }
+        if (getResumeIndex(uuid) == -1) {
+            System.out.println("ERROR");
+            return null;
+        } else {
+            return storage[getResumeIndex(uuid)];
         }
-        System.out.println("ERROR");
-        return null;
     }
 
     public void delete(String uuid) {
         // TODO check resume present
-        boolean resumePresent = false;
-        for (int i = 0; i < resumeCount; i++) {
-            if (uuid == storage[i].getUuid()) {
-                resumePresent = true;
-                storage[i] = storage[resumeCount - 1];
-                storage[resumeCount - 1] = null;
-                resumeCount--;
-            }
-        }
-        if (!resumePresent) {
+        if (getResumeIndex(uuid) == -1) {
             System.out.println("ERROR");
+        } else {
+            storage[getResumeIndex(uuid)] = storage[resumeCount - 1];
+            storage[resumeCount - 1] = null;
+            resumeCount--;
         }
     }
 
@@ -90,9 +77,7 @@ public class ArrayStorage {
         Resume[] storageNoNull = new Resume[resumeCount];
 
         for (int i = 0; i < resumeCount; i++) {
-            if (storage[i].getUuid() != null) {
-                storageNoNull[i] = storage[i];
-            }
+            storageNoNull[i] = storage[i];
         }
         return storageNoNull;
     }
