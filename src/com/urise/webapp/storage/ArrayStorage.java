@@ -33,7 +33,7 @@ public class ArrayStorage {
         // TODO check resume present
         int i = getResumeIndex(r.getUuid());
         if (i != -1) {
-            storage[i] = new Resume();
+            storage[i] = r;
         } else {
             System.out.println("ERROR");
         }
