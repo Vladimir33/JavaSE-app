@@ -31,8 +31,9 @@ public class ArrayStorage {
 
     public void update(Resume r) {
         // TODO check resume present
-        if (getResumeIndex(r.getUuid()) != -1) {
-            storage[getResumeIndex(r.getUuid())] = new Resume();
+        int i = getResumeIndex(r.getUuid());
+        if (i != -1) {
+            storage[i] = new Resume();
         } else {
             System.out.println("ERROR");
         }
@@ -50,20 +51,22 @@ public class ArrayStorage {
 
     public Resume get(String uuid) {
         // TODO check resume present
-        if (getResumeIndex(uuid) == -1) {
+        int i = getResumeIndex(uuid);
+        if (i == -1) {
             System.out.println("ERROR");
             return null;
         } else {
-            return storage[getResumeIndex(uuid)];
+            return storage[i];
         }
     }
 
     public void delete(String uuid) {
         // TODO check resume present
-        if (getResumeIndex(uuid) == -1) {
+        int i = getResumeIndex(uuid);
+        if (i == -1) {
             System.out.println("ERROR");
         } else {
-            storage[getResumeIndex(uuid)] = storage[resumeCount - 1];
+            storage[i] = storage[resumeCount - 1];
             storage[resumeCount - 1] = null;
             resumeCount--;
         }
