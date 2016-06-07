@@ -22,11 +22,7 @@ public class SortedArrayStorage extends AbstractArrayStorage {
 
     @Override
     public void save(Resume r) {
-        if (getIndex(r.getUuid()) >= 0) {
-            System.out.println("Resume " + r.getUuid() + " already exist");
-        } else if (resumeCount == STORAGE_LIMIT) {
-            System.out.println("Storage overflow");
-        } else {
+        if (!ifResumeExistStorageOverflow(r.getUuid())) {
             storage[resumeCount] = r;
             resumeCount++;
             Arrays.sort(storage, 0, resumeCount, null);

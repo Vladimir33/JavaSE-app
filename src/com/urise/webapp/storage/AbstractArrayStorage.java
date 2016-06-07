@@ -19,6 +19,18 @@ public abstract class AbstractArrayStorage implements Storage {
         Arrays.fill(storage, 0, resumeCount, null);
         resumeCount = 0;
     }
+
+    public boolean ifResumeExistStorageOverflow(String uuid) {
+        if (getIndex(uuid) >= 0) {
+            System.out.println("Resume " + uuid + " already exist");
+            return true;
+        }else if (resumeCount == STORAGE_LIMIT) {
+            System.out.println("Storage overflow");
+            return true;
+        }
+        return false;
+    }
+
     public int size() {
         return resumeCount;
     }
@@ -36,7 +48,7 @@ public abstract class AbstractArrayStorage implements Storage {
      * @return array, contains only Resumes in storage (without null)
      */
     public Resume[] getAll() {
-    //    Arrays.sort(storage, 0, resumeCount, null);
+
         return Arrays.copyOfRange(storage, 0, resumeCount);
     }
 
