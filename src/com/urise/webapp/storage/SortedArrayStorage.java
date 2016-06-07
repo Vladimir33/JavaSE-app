@@ -22,7 +22,9 @@ public class SortedArrayStorage extends AbstractArrayStorage {
 
     @Override
     public void save(Resume r) {
-        if (!ifResumeExistStorageOverflow(r.getUuid())) {
+        if (resumeCount == STORAGE_LIMIT) {
+            System.out.println("Storage overflow");
+        } else if (!ifResumeExist(r.getUuid())) {
             storage[resumeCount] = r;
             resumeCount++;
             Arrays.sort(storage, 0, resumeCount, null);
@@ -31,10 +33,8 @@ public class SortedArrayStorage extends AbstractArrayStorage {
 
     @Override
     public void delete(String uuid) {
-        int index = getIndex(uuid);
-        if (index < 0) {
-            System.out.println("Resume " + uuid + " not exist");
-        } else {
+        if(!ifResumeNotExist(uuid)){
+            int index = getIndex(uuid);
             System.arraycopy(storage, index + 1, storage, index, storage.length - index - 1);
             resumeCount--;
         }

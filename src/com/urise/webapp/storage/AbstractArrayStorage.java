@@ -20,12 +20,17 @@ public abstract class AbstractArrayStorage implements Storage {
         resumeCount = 0;
     }
 
-    public boolean ifResumeExistStorageOverflow(String uuid) {
+    public boolean ifResumeExist(String uuid) {
         if (getIndex(uuid) >= 0) {
             System.out.println("Resume " + uuid + " already exist");
             return true;
-        }else if (resumeCount == STORAGE_LIMIT) {
-            System.out.println("Storage overflow");
+        }
+        return false;
+    }
+
+    public boolean ifResumeNotExist(String uuid) {
+        if (getIndex(uuid) < 0) {
+            System.out.println("Resume " + uuid + " not exist");
             return true;
         }
         return false;

@@ -18,22 +18,17 @@ public class ArrayStorage extends AbstractArrayStorage {
     }
 
     public void save(Resume r) {
-        if (getIndex(r.getUuid()) != -1) {
-            System.out.println("Resume " + r.getUuid() + " already exist");
-        } else if (resumeCount == STORAGE_LIMIT) {
+        if (resumeCount == STORAGE_LIMIT) {
             System.out.println("Storage overflow");
-        } else {
+        } else if (!ifResumeExist(r.getUuid())) {
             storage[resumeCount] = r;
             resumeCount++;
         }
     }
 
     public void delete(String uuid) {
-        int index = getIndex(uuid);
-        if (index == -1) {
-            System.out.println("Resume " + uuid + " not exist");
-        } else {
-            storage[index] = storage[resumeCount - 1];
+        if(!ifResumeNotExist(uuid)){
+            storage[getIndex(uuid)] = storage[resumeCount - 1];
             storage[resumeCount - 1] = null;
             resumeCount--;
         }
