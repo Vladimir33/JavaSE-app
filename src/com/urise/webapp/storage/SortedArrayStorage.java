@@ -25,15 +25,17 @@ public class SortedArrayStorage extends AbstractArrayStorage {
         if (resumeCount == STORAGE_LIMIT) {
             System.out.println("Storage overflow");
         } else if (!ifResumeExist(r.getUuid())) {
-            storage[resumeCount] = r;
+            int index = Arrays.binarySearch(storage, 0, resumeCount, r);
+            index = -index - 1;
+            System.arraycopy(storage, index, storage, index + 1, storage.length - index - 1);
+            storage[index] = r;
             resumeCount++;
-            Arrays.sort(storage, 0, resumeCount, null);
         }
     }
 
     @Override
     public void delete(String uuid) {
-        if(!ifResumeNotExist(uuid)){
+        if (!ifResumeNotExist(uuid)) {
             int index = getIndex(uuid);
             System.arraycopy(storage, index + 1, storage, index, storage.length - index - 1);
             resumeCount--;
