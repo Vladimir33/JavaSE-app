@@ -19,6 +19,7 @@ public abstract class AbstractArrayStorageTest {
 
     private Storage storage;
     private Resume[] resumeStorage;
+    private Resume[] testResumeStorage;
 
     public AbstractArrayStorageTest(Storage storage) throws NoSuchFieldException, IllegalAccessException {
         this.storage = storage;
@@ -39,14 +40,14 @@ public abstract class AbstractArrayStorageTest {
         storage.save(new Resume(UUID_1));
         storage.save(new Resume(UUID_2));
         storage.save(new Resume(UUID_3));
+        testResumeStorage = new Resume[]{new Resume(UUID_1), new Resume(UUID_2), new Resume(UUID_3)};
     }
 
     @Test
     public void clear() throws Exception {
-        Resume[] resumeArray = storage.getAll();
         storage.clear();
         for (int i = 0; i < storage.size(); i++) {
-            Assert.assertEquals(null, storage.get(resumeArray[i].toString()));
+            Assert.assertEquals(null, storage.get(testResumeStorage[i].toString()));
             Assert.assertEquals(0, storage.size());
         }
     }
@@ -63,7 +64,6 @@ public abstract class AbstractArrayStorageTest {
 
     @Test
     public void getAll() throws Exception {
-        Resume[] testResumeStorage = new Resume[]{new Resume(UUID_1), new Resume(UUID_2), new Resume(UUID_3)};
         Assert.assertArrayEquals(storage.getAll(), testResumeStorage);
     }
 
