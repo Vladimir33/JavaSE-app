@@ -63,13 +63,8 @@ public abstract class AbstractArrayStorageTest {
 
     @Test
     public void getAll() throws Exception {
-        Resume[] resumeArray = storage.getAll();
-        if (storage.size() > 0) {
-            for (int i = 0; i < storage.size(); i++) {
-                Assert.assertNotNull(storage.get(resumeArray[i].toString()));
-            }
-        }
-        Assert.assertEquals(storage.getAll().length, storage.size());
+        Resume[] testResumeStorage = new Resume[]{new Resume(UUID_1), new Resume(UUID_2), new Resume(UUID_3)};
+        Assert.assertArrayEquals(storage.getAll(), testResumeStorage);
     }
 
     @Test(expected = ExistStorageException.class)
