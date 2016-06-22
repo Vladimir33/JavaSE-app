@@ -4,10 +4,6 @@ import com.urise.webapp.exception.ExistStorageException;
 import com.urise.webapp.exception.NotExistStorageException;
 import com.urise.webapp.model.Resume;
 
-import java.util.Iterator;
-import java.util.Map;
-
-
 /**
  * Created by Vladimir on 17.06.2016.
  */
@@ -20,43 +16,35 @@ public class MapStorage extends AbstractStorage {
 
     @Override
     public void update(Resume r) {
-        map.put(r.getUuid(), r);
+        if (map.containsKey(r.getUuid())){
+            map.put(r.getUuid(), r);
+        }else
+            throw new NotExistStorageException(r.getUuid());
     }
 
     @Override
     public void save(Resume r) {
-        for (Map.Entry<String, Resume> entry : map.entrySet()) {
-            if (entry.equals(r)) {
-                throw new ExistStorageException(r.getUuid());
-            }
-        }
-        map.put(r.getUuid(), r);
+        if (!map.containsKey(r.getUuid())){
+            map.put(r.getUuid(), r);
+        }else
+            throw new ExistStorageException(r.getUuid());
     }
 
     @Override
     public void delete(String uuid) {
-        Iterator<Map.Entry<String, Resume>> iterator = map.entrySet().iterator();
-        boolean ifFound = false;
-        while (iterator.hasNext()) {
-            Map.Entry<String, Resume> entry = iterator.next();
-            if (uuid.equals(entry.getKey())) {
-                ifFound = true;
-                iterator.remove();
-            }
-        }
-        if (!ifFound) {
+        if (map.containsKey(uuid)){
+            map.remove(uuid);
+        }else
             throw new NotExistStorageException(uuid);
-        }
     }
 
     @Override
     public Resume get(String uuid) {
-        for (Map.Entry<String, Resume> entry : map.entrySet()) {
-            if (uuid.equals(entry.getKey())) {
-                return entry.getValue();
-            }
+        if (map.containsKey(uuid)){
+            return map.get(uuid);
+        }else{
+            throw new NotExistStorageException(uuid);
         }
-        throw new NotExistStorageException(uuid);
     }
 
     @Override
