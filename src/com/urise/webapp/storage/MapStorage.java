@@ -16,33 +16,33 @@ public class MapStorage extends AbstractStorage {
 
     @Override
     public void update(Resume r) {
-        if (map.containsKey(r.getUuid())){
+        if (map.containsKey(r.getUuid())) {
             map.put(r.getUuid(), r);
-        }else
+        } else
             throw new NotExistStorageException(r.getUuid());
     }
 
     @Override
     public void save(Resume r) {
-        if (!map.containsKey(r.getUuid())){
+        if (!map.containsKey(r.getUuid())) {
             map.put(r.getUuid(), r);
-        }else
+        } else
             throw new ExistStorageException(r.getUuid());
     }
 
     @Override
     public void delete(String uuid) {
-        if (map.containsKey(uuid)){
+        if (map.containsKey(uuid)) {
             map.remove(uuid);
-        }else
+        } else
             throw new NotExistStorageException(uuid);
     }
 
     @Override
     public Resume get(String uuid) {
-        if (map.containsKey(uuid)){
+        if (map.containsKey(uuid)) {
             return map.get(uuid);
-        }else{
+        } else {
             throw new NotExistStorageException(uuid);
         }
     }

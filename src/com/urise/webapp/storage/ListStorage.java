@@ -4,10 +4,6 @@ import com.urise.webapp.exception.ExistStorageException;
 import com.urise.webapp.exception.NotExistStorageException;
 import com.urise.webapp.model.Resume;
 
-import java.util.Iterator;
-import java.util.Objects;
-
-
 /**
  * Created by Vladimir on 17.06.2016.
  */
@@ -20,48 +16,38 @@ public class ListStorage extends AbstractStorage {
 
     @Override
     public void update(Resume r) {
-        collection.add(r);
+        if (!collection.contains(r)) {
+            throw new NotExistStorageException(r.getUuid());
+        } else
+            collection.add(r);
     }
 
 
     @Override
     public void save(Resume r) {
-        Iterator<Resume> iterator = collection.iterator();
-        while (iterator.hasNext()) {
-            Resume resume = iterator.next();
-            if (Objects.equals(r.getUuid(), resume.getUuid())) {
-                throw new ExistStorageException(r.getUuid());
-            }
-        }
-        collection.add(r);
+        if (collection.contains(r)) {
+            throw new ExistStorageException(r.getUuid());
+        } else
+            collection.add(r);
     }
 
     @Override
     public void delete(String uuid) {
-        Iterator<Resume> iterator = collection.iterator();
-        boolean ifFound = false;
-        while (iterator.hasNext()) {
-            Resume r = iterator.next();
-            if (Objects.equals(r.getUuid(), uuid)) {
-                ifFound = true;
-                iterator.remove();
-            }
-        }
-        if (!ifFound) {
+        Resume r = new Resume(uuid);
+        if (!collection.contains(r)) {
             throw new NotExistStorageException(uuid);
-        }
+        } else
+            collection.remove(r);
     }
 
     @Override
     public Resume get(String uuid) {
-        Iterator<Resume> iterator = collection.iterator();
-        while (iterator.hasNext()) {
-            Resume r = iterator.next();
-            if (Objects.equals(r.getUuid(), uuid)) {
-                return r;
-            }
+        Resume r = new Resume(uuid);
+        int index = collection.indexOf(r);
+        if (index < 0) {
+            throw new NotExistStorageException(uuid);
         }
-        throw new NotExistStorageException(uuid);
+        return collection.get(index);
     }
 
     @Override
