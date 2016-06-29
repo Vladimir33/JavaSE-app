@@ -2,13 +2,12 @@ package com.urise.webapp.storage;
 
 import com.urise.webapp.model.Resume;
 
-import java.util.Arrays;
+import java.util.*;
 
-/**
- * Array based storage for Resumes
- */
 
 public interface Storage {
+    Comparator<Resume> RESUME_COMPARATOR =
+            (o1, o2) -> o1.getFullName().compareTo(o2.getFullName());
 
     void clear();
 
@@ -20,10 +19,7 @@ public interface Storage {
 
     void delete(String uuid);
 
-    /**
-     * @return array, contains only Resumes in storage (without null)
-     */
-    Resume[] getAll();
+    List<Resume> getAllSorted();
 
     int size();
 }

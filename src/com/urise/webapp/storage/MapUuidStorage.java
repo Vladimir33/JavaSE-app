@@ -4,6 +4,8 @@ import com.urise.webapp.model.Resume;
 
 import java.util.*;
 
+
+
 /**
  * Created by Vladimir on 25.06.2016.
  */
@@ -53,8 +55,9 @@ public class MapUuidStorage extends AbstractStorage {
 
     @Override
     protected List<Resume> sortedList() {
-        Map<String, Resume> treeMap = new TreeMap<>(map);
-        return new ArrayList<>(treeMap.values());
+        List list = new ArrayList<>(map.values());
+        Collections.sort(list, RESUME_COMPARATOR);
+        return list;
     }
 
     @Override

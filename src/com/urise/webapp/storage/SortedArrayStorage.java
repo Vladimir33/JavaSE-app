@@ -3,6 +3,8 @@ package com.urise.webapp.storage;
 import com.urise.webapp.model.Resume;
 
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 
 /**
@@ -30,5 +32,12 @@ public class SortedArrayStorage extends AbstractArrayStorage {
     protected int getIndex(String uuid) {
         Resume searchKey = new Resume(uuid);
         return Arrays.binarySearch(storage, 0, resumeCount, searchKey);
+    }
+
+    @Override
+    protected List<Resume> sortedList() {
+        List<Resume> list = Arrays.asList((Arrays.copyOfRange(storage, 0, resumeCount)));
+        Collections.sort(list, RESUME_COMPARATOR);
+        return list;
     }
 }
