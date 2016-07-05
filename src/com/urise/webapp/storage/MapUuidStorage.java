@@ -9,9 +9,38 @@ import java.util.*;
 /**
  * Created by Vladimir on 25.06.2016.
  */
-public class MapUuidStorage extends AbstractStorage {
-
+public class MapUuidStorage extends AbstractStorage<String> {
     private Map<String, Resume> map = new HashMap<>();
+
+    @Override
+    protected String getSearchKey(String uuid) {
+        return uuid;
+    }
+
+    @Override
+    protected void doUpdate(Resume r, String uuid) {
+        map.put(uuid, r);
+    }
+
+    @Override
+    protected boolean isExist(String uuid) {
+        return map.containsKey(uuid);
+    }
+
+    @Override
+    protected void doSave(Resume r, String uuid) {
+        map.put(uuid, r);
+    }
+
+    @Override
+    protected Resume doGet(String uuid) {
+        return map.get(uuid);
+    }
+
+    @Override
+    protected void doDelete(String uuid) {
+        map.remove(uuid);
+    }
 
     @Override
     public void clear() {
@@ -19,45 +48,8 @@ public class MapUuidStorage extends AbstractStorage {
     }
 
     @Override
-    protected String getSearchKey(String uuid) {
-        for (String searchKey : map.keySet()) {
-            if (searchKey.equals(uuid)) {
-                return searchKey;
-            }
-        }
-        return null;
-    }
-
-    @Override
-    protected void doUpdate(Resume r, Object searchKey) {
-        map.put(searchKey.toString(), r);
-    }
-
-    @Override
-    protected boolean isExist(Object searchKey) {
-        return searchKey != null;
-    }
-
-    @Override
-    protected void doSave(Resume r, Object searchKey) {
-        map.put(r.getUuid(), r);
-    }
-
-    @Override
-    protected Resume doGet(Object searchKey) {
-        return map.get(searchKey.toString());
-    }
-
-    @Override
-    protected void doDelete(Object searchKey) {
-        map.remove(searchKey.toString());
-    }
-
-    @Override
-    protected List<Resume> sortedList() {
-        List list = new ArrayList<>(map.values());
-        Collections.sort(list, RESUME_COMPARATOR);
-        return list;
+    public List<Resume> copyAll() {
+        return new ArrayList<>(map.values());
     }
 
     @Override

@@ -6,8 +6,6 @@ import java.util.*;
 
 
 public interface Storage {
-    Comparator<Resume> RESUME_COMPARATOR =
-            (o1, o2) -> o1.getFullName().compareTo(o2.getFullName());
 
     void clear();
 

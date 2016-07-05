@@ -11,13 +11,9 @@ import java.util.List;
 /**
  * Created by Vladimir on 17.06.2016.
  */
-public class ListStorage extends AbstractStorage {
-    protected List<Resume> list = new ArrayList<>();
+public class ListStorage extends AbstractStorage<Integer> {
 
-    @Override
-    public void clear() {
-        list.clear();
-    }
+    private List<Resume> list = new ArrayList<>();
 
     @Override
     protected Integer getSearchKey(String uuid) {
@@ -30,34 +26,38 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected boolean isExist(Object searchKey) {
-        return searchKey != null;
+    protected boolean isExist(Integer index) {
+        return index != null;
     }
 
     @Override
-    protected void doUpdate(Resume r, Object searchKey) {
-        list.set((Integer) searchKey, r);
+    protected void doUpdate(Resume r, Integer index) {
+        list.set(index, r);
     }
 
     @Override
-    protected void doSave(Resume r, Object searchKey) {
+    protected void doSave(Resume r, Integer index) {
         list.add(r);
     }
 
     @Override
-    protected Resume doGet(Object searchKey) {
-        return list.get((Integer) searchKey);
+    protected Resume doGet(Integer index) {
+        return list.get(index);
     }
 
     @Override
-    protected void doDelete(Object searchKey){
-        list.remove(((Integer) searchKey).intValue());
+    protected void doDelete(Integer index) {
+        list.remove(index.intValue());
     }
 
     @Override
-    public List<Resume> sortedList() {
-        Collections.sort(list, RESUME_COMPARATOR);
-        return list;
+    public void clear() {
+        list.clear();
+    }
+
+    @Override
+    public List<Resume> copyAll() {
+        return new ArrayList<>(list);
     }
 
     @Override
