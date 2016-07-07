@@ -14,16 +14,9 @@ public class Resume implements Comparable<Resume> {
     private final String uuid;
     private final String fullName;
 
-
     private Map<SectionType, Section> sections = new HashMap<>();
 
-    public Map fillSectionMap() {
-        sections.put(PERSONAL, new ResumeSections(PERSONAL));
-        sections.put(OBJECTIVE, new ResumeSections(OBJECTIVE));
-        sections.put(ACHIEVEMENT, new ResumeSections(ACHIEVEMENT));
-        sections.put(QUALIFICATIONS, new ResumeSections(QUALIFICATIONS));
-        sections.put(EXPERIENCE, new ResumeSections(EXPERIENCE));
-        sections.put(EDUCATION, new ResumeSections(EDUCATION));
+    public Map<SectionType, Section> getAllSections(){
         return sections;
     }
 
