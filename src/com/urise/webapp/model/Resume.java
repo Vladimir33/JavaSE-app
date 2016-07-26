@@ -2,8 +2,6 @@ package com.urise.webapp.model;
 
 import java.util.*;
 
-import static com.urise.webapp.model.SectionType.*;
-
 /**
  * Resume class
  */
@@ -14,14 +12,24 @@ public class Resume implements Comparable<Resume> {
     private final String uuid;
     private final String fullName;
 
-    private Map<SectionType, Section> sections = new HashMap<>();
+    private final Map<ContactType, String> contacts = new EnumMap<>(ContactType.class);
 
-    public Map<SectionType, Section> getAllSections(){
-        return sections;
-    }
+    private final Map<SectionType, Section> sections = new EnumMap<>(SectionType.class);
 
     public Section getSection(SectionType type) {
         return sections.get(type);
+    }
+
+    public void setSection(SectionType type, Section section) {
+        sections.put(type, section);
+    }
+
+    public String getContact(ContactType type) {
+        return contacts.get(type);
+    }
+
+    public void setContact(Map.Entry me) {
+        contacts.put((ContactType) me.getKey(), (String) me.getValue());
     }
 
     public Resume(String fullName) {

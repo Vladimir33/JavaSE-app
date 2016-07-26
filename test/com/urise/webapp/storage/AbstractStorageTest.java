@@ -3,16 +3,19 @@ package com.urise.webapp.storage;
 
 import com.urise.webapp.exception.ExistStorageException;
 import com.urise.webapp.exception.NotExistStorageException;
-import com.urise.webapp.exception.StorageException;
-import com.urise.webapp.model.Resume;
-import org.junit.Assert;
+import com.urise.webapp.model.*;
+import com.urise.webapp.util.DateUtil;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;
 
+
+import static com.urise.webapp.model.ContactType.*;
+import static com.urise.webapp.model.SectionType.*;
+import static com.urise.webapp.util.SectionUtil.*;
+import static java.time.Month.JANUARY;
+import static java.time.Month.OCTOBER;
 import static junit.framework.TestCase.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -33,7 +36,43 @@ public abstract class AbstractStorageTest {
     private static final Resume RESUME_4;
 
     static {
-        RESUME_1 = new Resume(UUID_1, "Name1");
+        RESUME_1 = new Resume(UUID_1, "Grigory Kislin");
+
+        createTextSection("Аналитический склад ума");
+        saveTextSection(RESUME_1, PERSONAL);
+
+        createTextSection("Ведущий преподаватель онлайн школы U-Rise");
+        saveTextSection(RESUME_1, OBJECTIVE);
+
+        createListSection(Arrays.asList("Разработка проектов \"Практика Java, разработка Web приложения\"",
+                "Реализация двухфакторной аутентификации для онлайн платформы\n" +
+                        "управления проектами Wrike. "));
+        saveListSection(RESUME_1, ACHIEVEMENT);
+
+        createListSection(Arrays.asList("JEE AS: GlassFish (v2.1, v3), OC4J, JBoss, Tomcat, Jetty, WebLogic, WSO2\n",
+                "Version control: Subversion, Git, Mercury, ClearCase, Perforce"));
+        saveListSection(RESUME_1, QUALIFICATIONS);
+
+        createOrganization("Wrike", "www.wrike.com", DateUtil.of(2014, OCTOBER),
+                DateUtil.of(2016, JANUARY), "Старший разработчик (backend)",
+                "Проектирование и разработка онлайн платформы управления проектами Wrike");
+        saveOrganization();
+        saveOrganizationSection(RESUME_1, EXPERIENCE);
+
+        createOrganization("СПНИУИТМО", "", DateUtil.of(1993, JANUARY),
+                DateUtil.of(1996, JANUARY), "программист С, С++", "Аспирантура");
+        saveOrganization();
+        createSameOrganization(DateUtil.of(1987, JANUARY), DateUtil.of(1993, JANUARY), "Инженер",
+                "(программист Fortran, C)");
+        saveOrganization();
+        saveOrganizationSection(RESUME_1, EDUCATION);
+
+        createContact(MAIL, "java@u-rise.com");
+        saveContact(RESUME_1);
+        createContact(SKYPE, "grigory.kislin");
+        saveContact(RESUME_1);
+        createContact(GITHUB, "https://github.com/gkislin/");
+
         RESUME_2 = new Resume(UUID_2, "Name2");
         RESUME_3 = new Resume(UUID_3, "Name3");
         RESUME_4 = new Resume(UUID_4, "Name4");
