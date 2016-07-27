@@ -1,6 +1,7 @@
 package com.urise.webapp.model;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -14,6 +15,8 @@ public class Organization {
     private LocalDate endDate;
     private String title;
     private String description;
+
+    private List<SameOrganization> sameOrganization = new ArrayList<>();
 
     public Organization(String name, String url, LocalDate startDate, LocalDate endDate, String title, String description) {
         Objects.requireNonNull(startDate, "startDate must not be null");
@@ -40,15 +43,15 @@ public class Organization {
             this.endDate = endDate;
             this.title = title;
             this.description = description;
+            sameOrganization.add(this);
         }
 
         @Override
         public String toString() {
-            return "startDate=" + startDate +
-                    ", endDate=" + endDate +
-                    ", title='" + title + '\'' +
-                    ", description='" + description + '\'' +
-                    '}';
+            return startDate.getYear() +
+                    "-" + endDate.getYear() +
+                    ":" + title +
+                    "(" + description + ")";
         }
     }
 
@@ -79,12 +82,13 @@ public class Organization {
 
     @Override
     public String toString() {
-        return "Organization{" +
-                "homePage=" + homePage +
-                ", startDate=" + startDate +
-                ", endDate=" + endDate +
-                ", title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                '}';
+        return
+                homePage +
+                        "\n" + startDate.getYear() +
+                        "-" + endDate.getYear() +
+                        ":" + title +
+                        "(" + description + ")"
+                        + "\n" +
+                        sameOrganization.toString();
     }
 }

@@ -16,7 +16,8 @@ public class SectionUtil {
     private static TextSection textSection;
     private static ListSection listSection;
     private static Organization organization;
-    private static List<Organization> organizations = new ArrayList<>();
+    private static List<Organization> expOrganizations = new ArrayList<>();
+    private static List<Organization> eduOrganizations = new ArrayList<>();
     private static Map.Entry<ContactType, String> mapContact;
 
     public static TextSection createTextSection(String text) {
@@ -26,7 +27,6 @@ public class SectionUtil {
     public static void saveTextSection(Resume resume, SectionType type) {
         resume.setSection(type, textSection);
     }
-
 
     public static ListSection createListSection(List<String> items) {
         return listSection = new ListSection(items);
@@ -38,6 +38,7 @@ public class SectionUtil {
 
     public static Organization createOrganization(String name, String url, LocalDate startDate,
                                                   LocalDate endDate, String title, String description) {
+
         return organization = new Organization(name, url, startDate, endDate, title, description);
     }
 
@@ -46,11 +47,21 @@ public class SectionUtil {
         return organization.new SameOrganization(startDate, endDate, title, description);
     }
 
-    public static void saveOrganization(){
-        organizations.add(organization);
+    public static void saveOrganization(SectionType type) {
+        if (type == SectionType.EXPERIENCE) {
+            expOrganizations.add(organization);
+        } else if (type == SectionType.EDUCATION) {
+            eduOrganizations.add(organization);
+        }
     }
 
-    public static void saveOrganizationSection(Resume resume, SectionType type){
+    public static void saveOrganizationSection(Resume resume, SectionType type) {
+        List<Organization> organizations = new ArrayList<>();
+        if (type == SectionType.EXPERIENCE) {
+            organizations = expOrganizations;
+        } else if (type == SectionType.EDUCATION) {
+            organizations = eduOrganizations;
+        }
         resume.setSection(type, new OrganizationSection(organizations));
     }
 

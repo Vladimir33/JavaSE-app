@@ -56,15 +56,15 @@ public abstract class AbstractStorageTest {
         createOrganization("Wrike", "www.wrike.com", DateUtil.of(2014, OCTOBER),
                 DateUtil.of(2016, JANUARY), "Старший разработчик (backend)",
                 "Проектирование и разработка онлайн платформы управления проектами Wrike");
-        saveOrganization();
+        saveOrganization(EXPERIENCE);
         saveOrganizationSection(RESUME_1, EXPERIENCE);
 
         createOrganization("СПНИУИТМО", "", DateUtil.of(1993, JANUARY),
                 DateUtil.of(1996, JANUARY), "программист С, С++", "Аспирантура");
-        saveOrganization();
+        saveOrganization(EDUCATION);
         createSameOrganization(DateUtil.of(1987, JANUARY), DateUtil.of(1993, JANUARY), "Инженер",
                 "(программист Fortran, C)");
-        saveOrganization();
+        saveOrganization(EDUCATION);
         saveOrganizationSection(RESUME_1, EDUCATION);
 
         createContact(MAIL, "java@u-rise.com");
@@ -72,6 +72,7 @@ public abstract class AbstractStorageTest {
         createContact(SKYPE, "grigory.kislin");
         saveContact(RESUME_1);
         createContact(GITHUB, "https://github.com/gkislin/");
+        saveContact(RESUME_1);
 
         RESUME_2 = new Resume(UUID_2, "Name2");
         RESUME_3 = new Resume(UUID_3, "Name3");
