@@ -6,7 +6,11 @@ import java.util.Objects;
  * Created by Vladimir on 09.07.2016.
  */
 public class TextSection extends Section{
-    private final String content;
+    private static final long serialVersionUID = 1L;
+    private String content;
+
+    public TextSection() {
+    }
 
     public TextSection(String content) {
         Objects.requireNonNull(content, "content must not be null");

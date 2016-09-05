@@ -4,14 +4,14 @@ import com.urise.webapp.exception.ExistStorageException;
 import com.urise.webapp.exception.NotExistStorageException;
 import com.urise.webapp.model.Resume;
 import java.util.*;
-import java.util.logging.Level;
+
 import java.util.logging.Logger;
 
 /**
  * Created by Vladimir on 17.06.2016.
  */
 public abstract class AbstractStorage<SK> implements Storage {
-    protected static final Logger LOG = Logger.getLogger(AbstractStorage.class.getName());
+    private static final Logger LOG = Logger.getLogger(AbstractStorage.class.getName());
 
     protected abstract SK getSearchKey(String uuid);
 
@@ -25,7 +25,7 @@ public abstract class AbstractStorage<SK> implements Storage {
 
     protected abstract void doDelete(SK searchKey);
 
-    protected abstract List<Resume> copyAll();
+    protected abstract List<Resume> doCopyAll();
 
     public void update(Resume r) {
         LOG.info("Update " + r);
@@ -54,9 +54,8 @@ public abstract class AbstractStorage<SK> implements Storage {
     private SK getExistedSearchKey(String uuid) {
         SK searchKey = getSearchKey(uuid);
         if (!isExist(searchKey)) {
-            NotExistStorageException e = new NotExistStorageException(uuid);
-            LOG.log(Level.WARNING, e.getMessage(), e);
-            throw e;
+            LOG.warning("Resume " + uuid + " not exist");
+            throw new NotExistStorageException(uuid);
         }
         return searchKey;
     }
@@ -64,9 +63,8 @@ public abstract class AbstractStorage<SK> implements Storage {
     private SK getNotExistedSearchKey(String uuid) {
         SK searchKey = getSearchKey(uuid);
         if (isExist(searchKey)) {
-            ExistStorageException e = new ExistStorageException(uuid);
-            LOG.log(Level.WARNING, e.getMessage(), e);
-            throw e;
+            LOG.warning("Resume " + uuid + " already exist");
+            throw new ExistStorageException(uuid);
         }
         return searchKey;
     }
@@ -74,10 +72,8 @@ public abstract class AbstractStorage<SK> implements Storage {
     @Override
     public List<Resume> getAllSorted() {
         LOG.info("getAllSorted");
-        List<Resume> list = copyAll();
+        List<Resume> list = doCopyAll();
         Collections.sort(list);
         return list;
     }
 }
-
-

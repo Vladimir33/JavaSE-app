@@ -1,40 +1,33 @@
 package com.urise.webapp.model;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+import java.io.Serializable;
 import java.util.*;
 
 /**
  * Resume class
  */
 
-public class Resume implements Comparable<Resume> {
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
+public class Resume implements Comparable<Resume>, Serializable {
+    private static final long serialVersionUID = 1L;
 
     // Unique identifier
-    private final String uuid;
-    private final String fullName;
+    private String uuid;
+
+    private String fullName;
 
     private final Map<ContactType, String> contacts = new EnumMap<>(ContactType.class);
-
     private final Map<SectionType, Section> sections = new EnumMap<>(SectionType.class);
 
-    public Section getSection(SectionType type) {
-        return sections.get(type);
-    }
-
-    public void setSection(SectionType type, Section section) {
-        sections.put(type, section);
-    }
-
-    public String getContact(ContactType type) {
-        return contacts.get(type);
-    }
-
-    public void setContact(Map.Entry me) {
-        contacts.put((ContactType) me.getKey(), (String) me.getValue());
+    public Resume() {
     }
 
     public Resume(String fullName) {
-        this.fullName = fullName;
-        this.uuid = UUID.randomUUID().toString();
+        this(UUID.randomUUID().toString(), fullName);
     }
 
     public Resume(String uuid, String fullName) {
@@ -48,27 +41,49 @@ public class Resume implements Comparable<Resume> {
         return uuid;
     }
 
+    public String getContact(ContactType type) {
+        return contacts.get(type);
+    }
+
+    public Section getSection(SectionType type) {
+        return sections.get(type);
+    }
+
+    public void addContact(ContactType type, String value) {
+        contacts.put(type, value);
+    }
+
+    public void addSection(SectionType type, Section section) {
+        sections.put(type, section);
+    }
+
     public String getFullName() {
         return fullName;
     }
 
+    public Map<ContactType, String> getContacts() {
+        return contacts;
+    }
+
+    public Map<SectionType, Section> getSections() {
+        return sections;
+    }
+
     @Override
     public boolean equals(Object o) {
+
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         Resume resume = (Resume) o;
-
-        if (!uuid.equals(resume.uuid)) return false;
-        return fullName.equals(resume.fullName);
-
+        return Objects.equals(uuid, resume.uuid) &&
+                Objects.equals(fullName, resume.fullName) &&
+                Objects.equals(contacts, resume.contacts) &&
+                Objects.equals(sections, resume.sections);
     }
 
     @Override
     public int hashCode() {
-        int result = uuid.hashCode();
-        result = 31 * result + fullName.hashCode();
-        return result;
+        return Objects.hash(uuid, fullName, contacts, sections);
     }
 
     @Override
@@ -77,8 +92,8 @@ public class Resume implements Comparable<Resume> {
     }
 
     @Override
-    public int compareTo(Resume r) {
-        int cmp = fullName.compareTo(r.fullName);
-        return cmp != 0 ? cmp : uuid.compareTo(r.uuid);
+    public int compareTo(Resume o) {
+        int cmp = fullName.compareTo(o.fullName);
+        return cmp != 0 ? cmp : uuid.compareTo(o.uuid);
     }
 }

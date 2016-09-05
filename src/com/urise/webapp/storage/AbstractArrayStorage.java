@@ -1,7 +1,4 @@
 package com.urise.webapp.storage;
-
-import com.urise.webapp.exception.ExistStorageException;
-import com.urise.webapp.exception.NotExistStorageException;
 import com.urise.webapp.exception.StorageException;
 import com.urise.webapp.model.Resume;
 
@@ -36,7 +33,8 @@ public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
     /**
      * @return array, contains only Resumes in storage (without null)
      */
-    public List<Resume> copyAll() {
+    @Override
+    public List<Resume> doCopyAll() {
         return Arrays.asList(Arrays.copyOfRange(storage, 0, size));
     }
 
