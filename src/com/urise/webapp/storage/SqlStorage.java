@@ -50,10 +50,10 @@ public class SqlStorage implements Storage {
                         throw new NotExistStorageException(r.getUuid());
                     }
                 }
-                try (PreparedStatement ps = conn.prepareStatement("UPDATE contact SET type=?, value=? WHERE resume_uuid=?")) {
+                try (PreparedStatement ps = conn.prepareStatement("UPDATE contact SET value=? WHERE type=? AND resume_uuid=?")) {
                     for (Map.Entry<ContactType, String> e : r.getContacts().entrySet()) {
-                        ps.setString(1, e.getKey().name());
-                        ps.setString(2, e.getValue());
+                        ps.setString(1, e.getValue());
+                        ps.setString(2, e.getKey().name());
                         ps.setString(3, r.getUuid());
                         ps.addBatch();
                     }
