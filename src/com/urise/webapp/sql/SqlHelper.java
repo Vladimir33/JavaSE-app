@@ -1,11 +1,7 @@
 package com.urise.webapp.sql;
 
-
 import com.urise.webapp.exception.StorageException;
-import com.urise.webapp.model.ContactType;
 import com.urise.webapp.model.Resume;
-
-
 import java.sql.*;
 import java.util.Map;
 
@@ -22,14 +18,7 @@ public class SqlHelper {
 
 
     public void execute(String sql) {
-
-        //    execute(sql, PreparedStatement::execute);
-        execute(sql, new SqlExecutor<Boolean>() {
-            @Override
-            public Boolean execute(PreparedStatement ps) throws SQLException {
-                return ps.execute();
-            }
-        });
+        execute(sql, PreparedStatement::execute);
     }
 
     public <T> T execute(String sql, SqlExecutor<T> executor) {
@@ -58,13 +47,24 @@ public class SqlHelper {
         }
     }
 
-//    public void setContact(Resume r, PreparedStatement ps) throws SQLException {
-//        for (Map.Entry<ContactType, String> e : r.getContacts().entrySet()) {
-//            ps.setString(1, r.getUuid());
-//            ps.setString(2, e.getKey().name());
-//            ps.setString(3, e.getValue());
-//            ps.addBatch();
-//        }
-//    }
+    public <K, V> void addBatchFromMapInSave(Resume r, PreparedStatement ps, Map<K, V> map) throws SQLException {
+
+        for (Map.Entry<K, V> e : map.entrySet()) {
+            ps.setString(1, r.getUuid());
+            ps.setString(2, String.valueOf(e.getKey()));
+            ps.setString(3, String.valueOf(e.getValue()));
+            ps.addBatch();
+        }
+    }
+
+    public <K, V> void addBatchFromMapInUpdate(Resume r, PreparedStatement ps, Map<K, V> map) throws SQLException {
+
+        for (Map.Entry<K, V> e : map.entrySet()) {
+            ps.setString(1, String.valueOf(e.getValue()));
+            ps.setString(2, String.valueOf(e.getKey()));
+            ps.setString(3, r.getUuid());
+            ps.addBatch();
+        }
+    }
 }
 
